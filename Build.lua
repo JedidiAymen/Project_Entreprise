@@ -10,6 +10,9 @@ workspace "New Project"
 
 OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 
+-- Build ImGui first
+include "ImGui/Build-ImGui.lua"
+
 group "Core"
 	include "Core/Build-Core.lua"
 group ""

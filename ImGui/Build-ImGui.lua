@@ -1,34 +1,31 @@
-project "App"
-   kind "ConsoleApp"
+project "ImGui"
+   kind "StaticLib"
    language "C++"
    cppdialect "C++20"
-   targetdir "Binaries/%{cfg.buildcfg}"
    staticruntime "off"
 
-   files { "Source/**.h", "Source/**.cpp" }
-
-   includedirs
+   files 
    {
-      "Source",
-      "../Core/Source",
-      "../ImGui/Source"  -- Add ImGui headers
+      "Source/imgui.cpp",
+      "Source/imgui_demo.cpp", 
+      "Source/imgui_draw.cpp",
+      "Source/imgui_tables.cpp",
+      "Source/imgui_widgets.cpp",
+      "Source/backends/imgui_impl_opengl3.cpp",
+      "Source/backends/imgui_impl_glfw.cpp"
    }
 
-   links
+   includedirs 
    {
-      "Core",
-      "ImGui"  -- Link ImGui library
+      "Source",
+      "Source/backends"
    }
 
    targetdir ("../Binaries/" .. OutputDir .. "/%{prj.name}")
    objdir ("../Binaries/Intermediates/" .. OutputDir .. "/%{prj.name}")
 
-   filter "system:windows"
-       systemversion "latest"
-       defines { "WINDOWS" }
-
    filter "system:linux"
-       links { "GL", "glfw", "dl", "pthread" }  -- Graphics libraries for Linux
+       pic "On"
 
    filter "configurations:Debug"
        defines { "DEBUG" }
@@ -36,10 +33,9 @@ project "App"
        symbols "On"
 
    filter "configurations:Release"
-       defines { "RELEASE" }
+       defines { "RELEASE" } 
        runtime "Release"
        optimize "On"
-       symbols "On"
 
    filter "configurations:Dist"
        defines { "DIST" }
